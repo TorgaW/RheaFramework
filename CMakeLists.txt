@@ -7,7 +7,7 @@ project(RheaRender)
 find_package(Vulkan REQUIRED)                                                                                                                                               
 find_package(glfw3 3.3 REQUIRED)                                                                                                                                     
 
-add_executable(RheaRender main.cpp VulkanApp.cpp)
+add_executable(RheaRender main.cpp VulkanApp.cpp Utils.cpp)
 target_link_libraries(RheaRender glfw vulkan)
 
 # command to update resources every build

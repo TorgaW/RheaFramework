@@ -13,6 +13,9 @@
 
 #include <vulkan/vulkan.h>
 
+#include <cstdint>
+#include <limits>
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <map>
@@ -20,6 +23,7 @@
 #include <set>
 
 #include "GlobalState.hpp"
+#include "Utils.hpp"
 
 #define APP_ENABLE_BEST_DEVICE_CHECK
 #define APP_DEVICE_MUST_SUPPORT_GEOMETRY_SHADER
@@ -57,12 +61,21 @@ private:
     void InitVulkan();
     void RunLoop();
     void CleanUp();
+    void Draw(); //WTF 800 LINES OF CODE TO DO THIS F*KING SHIT 
 
     //* vk functions *//
     void CreateVkAppInstance();
     void SetVkAppPhysicalDevice();
     void SetVkAppLogicalDevice();
     void CreateVkAppSurfaceKHR();
+    void CreateSwapChain();
+    void CreateImageViews();
+    void CreateRenderPass();
+    void CreateGraphicsPipeline();
+    void CreateFramebuffers();
+    void CreateCommandPool();
+    void CreateCommandBuffer();
+    void CreateSyncObjects();
 
     // simple device check (geom shader + discrete)
     bool PhysicalDeviceCheck(VkPhysicalDevice device);
@@ -72,6 +85,11 @@ private:
     QueueFamilyIndices GetDeviceQueueFamilies(VkPhysicalDevice device);
     bool CheckDeviceExtensionSupport(VkPhysicalDevice device);
     SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device);
+    VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+    VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+    VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+    VkShaderModule CreateShaderModule(const std::vector<char>& code);
+    void RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
     void PickBestDevice(const std::vector<VkPhysicalDevice>& devices);
 private:
@@ -81,6 +99,20 @@ private:
     VkQueue vkapp_graphics_queue {nullptr};
     VkQueue vkapp_present_queue {nullptr};
     VkSurfaceKHR vkapp_surface {nullptr};
+    VkSwapchainKHR vkapp_swap_chain {nullptr};
+    std::vector<VkImage> vkapp_swap_chain_images;
+    VkFormat vkapp_swap_chain_image_format;
+    VkExtent2D vkapp_swap_chain_extent;
+    std::vector<VkImageView> vkapp_swap_chain_image_views;
+    VkRenderPass vkapp_render_pass {nullptr};
+    VkPipelineLayout vkapp_pipeline_layout {nullptr};
+    VkPipeline vkapp_graphics_pipeline {nullptr};
+    std::vector<VkFramebuffer> vkapp_swap_chain_framebuffers;
+    VkCommandPool vkapp_command_pool {nullptr};
+    VkCommandBuffer vkapp_command_buffer {nullptr};
+    VkSemaphore vkapp_image_available_semaphore;
+    VkSemaphore vkapp_render_finished_semaphore;
+    VkFence vkapp_in_flight_fence;
     float vkapp_device_queue_priority {1.0f};
     const std::vector<const char*> vkapp_device_extensions { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 };
