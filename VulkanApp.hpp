@@ -11,8 +11,6 @@
 #endif
 #include <GLFW/glfw3native.h>
 
-#include <vulkan/vulkan.h>
-
 #include <cstdint>
 #include <limits>
 #include <algorithm>
@@ -24,6 +22,8 @@
 
 #include "GlobalState.hpp"
 #include "Utils.hpp"
+
+#include "Engine/VulkanInitUtils/VulkanInits.hpp"
 
 #define APP_ENABLE_BEST_DEVICE_CHECK
 #define APP_DEVICE_MUST_SUPPORT_GEOMETRY_SHADER

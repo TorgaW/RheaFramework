@@ -1,0 +1,15 @@
+#ifndef A4F3B3C9_226C_489A_8578_7E7773529AFC
+#define A4F3B3C9_226C_489A_8578_7E7773529AFC
+
+// #define VK_USE_PLATFORM_X11_KHR
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+#ifdef __APPLE__
+#define GLFW_EXPOSE_NATIVE_COCOA
+#elif __linux__
+#define GLFW_EXPOSE_NATIVE_X11
+#endif
+#include <GLFW/glfw3native.h>
+
+
+#endif /* A4F3B3C9_226C_489A_8578_7E7773529AFC */

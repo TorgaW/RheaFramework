@@ -5,9 +5,25 @@ project(RheaRender)
                                                                                                                                                                                   
 # find_package(OpenGL REQUIRED)
 find_package(Vulkan REQUIRED)                                                                                                                                               
-find_package(glfw3 3.3 REQUIRED)                                                                                                                                     
+find_package(glfw3 3.3 REQUIRED)       
 
-add_executable(RheaRender main.cpp VulkanApp.cpp Utils.cpp)
+set(RENDER Engine/Render/Render.cpp)
+
+set(VULKAN_UTILS
+Engine/Utils/Vulkan/QueueFamilyUtils.cpp
+Engine/Utils/Vulkan/SwapChainSupportUtils.cpp
+)
+
+set(VULKAN_INITS
+Engine/VulkanInitUtils/Window/WindowInit.cpp
+Engine/VulkanInitUtils/Instance/VulkanInitInstance.cpp
+Engine/VulkanInitUtils/Surface/VulkanInitSurface.cpp
+Engine/VulkanInitUtils/PhysicalDevice/VulkanInitPhysicalDevice.cpp
+)
+
+set(ENGINE ${RENDER} ${VULKAN_INITS} ${VULKAN_UTILS})
+
+add_executable(RheaRender main.cpp VulkanApp.cpp Utils.cpp ${ENGINE})
 target_link_libraries(RheaRender glfw vulkan)
 
 # command to update resources every build

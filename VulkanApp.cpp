@@ -5,7 +5,7 @@ void VulkanApp::Init()
     glfwInit();
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     GlobalState::mainWindow = glfwCreateWindow(init_window_width, init_window_height, "Rhea", nullptr, nullptr);
 
@@ -19,7 +19,8 @@ void VulkanApp::Run()
 
 void VulkanApp::InitVulkan()
 {
-    CreateVkAppInstance();
+    // CreateVkAppInstance();
+    Rhea::VulkanInitInstance::CreateVulkanInstance(&vkapp_instance);
     CreateVkAppSurfaceKHR();
     SetVkAppPhysicalDevice();
     SetVkAppLogicalDevice();
@@ -786,10 +787,6 @@ void VulkanApp::RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imag
     {
         std::cout << "[ERROR]:: Failed to start command recording\n";
     }
-    // else
-    // {
-    //     std::cout << "[SUCCESS]:: Starting render pass commands recording...\n";
-    // }
 
     VkRenderPassBeginInfo renderPassInfo{};
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -828,10 +825,6 @@ void VulkanApp::RecordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imag
     {
         std::cout << "[ERROR]:: Failed to end command recording\n";
     }
-    // else
-    // {
-    //     std::cout << "[SUCCESS]:: End of recording\n";
-    // }
 }
 
 void VulkanApp::PickBestDevice(const std::vector<VkPhysicalDevice> &devices)
